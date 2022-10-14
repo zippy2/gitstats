@@ -25,7 +25,7 @@ from multiprocessing import Pool
 
 os.environ['LC_ALL'] = 'C'
 
-GNUPLOT_COMMON = 'set terminal png transparent size 640,240\nset size 1.0,1.0\n'
+GNUPLOT_COMMON = 'set terminal png transparent size 1280,640\nset size 1.0,1.0\n'
 ON_LINUX = (platform.system() == 'Linux')
 WEEKDAYS = ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
 
@@ -43,15 +43,15 @@ conf = {
 	'max_domains': 10,
 	'max_ext_length': 10,
 	'style': 'gitstats.css',
-	'max_authors': 20,
+	'max_authors': 10,
 	'authors_top': 5,
 	'commit_begin': '',
 	'commit_end': 'HEAD',
-	'linear_linestats': 1,
+	'linear_linestats': 0,
 	'project_name': '',
 	'processes': 8,
 	'start_date': '',
-	'line_style': '',
+	'line_style': 'w lines smooth sbezier lw 2',
 }
 
 def getpipeoutput(cmds, quiet = False):
@@ -1323,7 +1323,7 @@ plot 'lines_of_code.dat' using 1:2 {getlinestyle()}
 		f.write(GNUPLOT_COMMON)
 		f.write(
 """
-set terminal png transparent size 640,480
+set terminal png transparent size 1280,720
 set output 'lines_of_code_by_author.png'
 set key left top
 set yrange [0:]
@@ -1352,7 +1352,7 @@ plot """
 		f.write(GNUPLOT_COMMON)
 		f.write(
 """
-set terminal png transparent size 640,480
+set terminal png transparent size 1280,720
 set output 'commits_by_author.png'
 set key left top
 set yrange [0:]
