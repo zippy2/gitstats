@@ -50,7 +50,8 @@ conf = {
 	'linear_linestats': 1,
 	'project_name': '',
 	'processes': 8,
-	'start_date': ''
+	'start_date': '',
+	'line_style': '',
 }
 
 def getpipeoutput(cmds, quiet = False):
@@ -106,6 +107,12 @@ def getstatsummarycounts(line):
 	elif len(numbers) == 2 and line.find('(-)') != -1:
 		numbers.insert(1, 0); # only deletions were printed on line
 	return numbers
+
+def getlinestyle():
+	if len(conf['line_style']) == 0:
+		return "with lines"
+	else:
+		return conf['line_style']
 
 VERSION = 0
 def getversion():
@@ -1296,7 +1303,7 @@ plot 'files_by_date.dat' using 1:2 w steps
 		f = open(path + '/lines_of_code.plot', 'w')
 		f.write(GNUPLOT_COMMON)
 		f.write(
-"""
+f"""
 set output 'lines_of_code.png'
 unset key
 set yrange [0:]
@@ -1307,7 +1314,7 @@ set grid y
 set ylabel "Lines"
 set xtics rotate
 set bmargin 6
-plot 'lines_of_code.dat' using 1:2 w lines
+plot 'lines_of_code.dat' using 1:2 {getlinestyle()}
 """)
 		f.close()
 
@@ -1334,7 +1341,7 @@ plot """
 		for a in self.authors_to_plot:
 			i = i + 1
 			author = a.replace("\"", "\\\"").replace("`", "")
-			plots.append("""'lines_of_code_by_author.dat' using 1:%d title "%s" w lines""" % (i, author))
+			plots.append("""'lines_of_code_by_author.dat' using 1:%d title "%s" %s """ % (i, author, getlinestyle()))
 		f.write(", ".join(plots))
 		f.write('\n')
 
@@ -1363,7 +1370,7 @@ plot """
 		for a in self.authors_to_plot:
 			i = i + 1
 			author = a.replace("\"", "\\\"").replace("`", "")
-			plots.append("""'commits_by_author.dat' using 1:%d title "%s" w lines""" % (i, author))
+			plots.append("""'commits_by_author.dat' using 1:%d title "%s" %s""" % (i, author, getlinestyle()))
 		f.write(", ".join(plots))
 		f.write('\n')
 
